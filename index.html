@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Program Financial Scenarios</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white rounded-xl shadow-2xl p-8 max-w-5xl w-full mx-auto my-8">
+        <!-- Chart Title -->
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Financial Scenarios: Cost vs. Cumulative Revenue</h1>
+        
+        <!-- Chart Container -->
+        <div class="relative h-[500px] w-full">
+            <canvas id="cumulativeChart"></canvas>
+        </div>
+
+        <!-- Chart Description -->
+        <div class="mt-8 text-center text-gray-600">
+            <p class="text-lg">This chart compares the **total cumulative cost** of the program against the **total cumulative revenue** for three different performance models over a one-year period. The points where the revenue lines cross the cost line represent the break-even points.</p>
+            <p class="mt-4 text-sm">
+                **Ideal:** 3 new accounts signed per week per associate.
+                <br>
+                **Likely:** 2 new accounts signed per week per associate.
+                <br>
+                **Poor:** 1 new account signed per week per associate.
+            </p>
+        </div>
+    </div>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Financial data based on the provided models
+        const monthlyCost = 34640;
+        const idealRevenuePerMonth = 24000;
+        const likelyRevenuePerMonth = 16000;
+        const poorRevenuePerMonth = 8000;
+
+        const labels = ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7', 'Month 8', 'Month 9', 'Month 10', 'Month 11', 'Month 12'];
+
+        // Calculate cumulative costs and revenues over the 12-month period
+        const cumulativeCostData = labels.map((_, i) => (i + 1) * monthlyCost);
+
+        const cumulativeIdealRevenueData = labels.map((_, i) => {
+            let total = 0;
+            for (let j = 0; j <= i; j++) {
+                total += idealRevenuePerMonth * (j + 1);
+            }
+            return total;
+        });
+
+        const cumulativeLikelyRevenueData = labels.map((_, i) => {
+            let total = 0;
+            for (let j = 0; j <= i; j++) {
+                total += likelyRevenuePerMonth * (j + 1);
+            }
+            return total;
+        });
+
+        const cumulativePoorRevenueData = labels.map((_, i) => {
+            let total = 0;
+            for (let j = 0; j <= i; j++) {
+                total += poorRevenuePerMonth * (j + 1);
+            }
+            return total;
+        });
+
+        const ctx = document.getElementById('cumulativeChart').getContext('2d');
+        const cumulativeChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Cumulative Costs',
+                    data: cumulativeCostData,
+                    borderColor: 'rgb(248, 113, 113)', // Red
+                    backgroundColor: 'rgba(248, 113, 113, 0.5)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.1
+                }, {
+                    label: 'Ideal Model (3/week)',
+                    data: cumulativeIdealRevenueData,
+                    borderColor: 'rgb(34, 197, 94)', // Green
+                    backgroundColor: 'rgba(34, 197, 94, 0.5)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.1
+                }, {
+                    label: 'Likely Model (2/week)',
+                    data: cumulativeLikelyRevenueData,
+                    borderColor: 'rgb(59, 130, 246)', // Blue
+                    backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.1
+                }, {
+                    label: 'Poor Model (1/week)',
+                    data: cumulativePoorRevenueData,
+                    borderColor: 'rgb(251, 191, 36)', // Yellow
+                    backgroundColor: 'rgba(251, 191, 36, 0.5)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Cumulative Value ($)',
+                            font: { size: 16, weight: 'bold' }
+                        },
+                        ticks: {
+                            callback: function(value) { return '$' + value.toLocaleString(); }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Timeline',
+                            font: { size: 16, weight: 'bold' }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) { label += ': '; }
+                                if (context.parsed.y !== null) { label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y); }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        setTimeout(() => { cumulativeChart.update(); }, 500);
+    </script>
+</body>
+</html>
