@@ -40,6 +40,7 @@
         const idealRevenuePerMonth = 24000;
         const likelyRevenuePerMonth = 16000;
         const poorRevenuePerMonth = 8000;
+        const ambiguousRevenuePerMonth = [12000, 14000, 18000, 15000, 20000, 17000, 22000, 25000, 28000, 30000, 32000, 35000];
 
         const labels = ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7', 'Month 8', 'Month 9', 'Month 10', 'Month 11', 'Month 12'];
 
@@ -69,20 +70,14 @@
             return total;
         });
         
-        const cumulativeUnderperformingRevenueData = [
-            poorRevenuePerMonth,
-            poorRevenuePerMonth,
-            poorRevenuePerMonth,
-            poorRevenuePerMonth,
-            poorRevenuePerMonth,
-            poorRevenuePerMonth,
-            poorRevenuePerMonth,
-            poorRevenuePerMonth,
-            poorRevenuePerMonth,
-            poorRevenuePerMonth,
-            poorRevenuePerMonth,
-            poorRevenuePerMonth,
-        ];
+        const cumulativeAmbiguousRevenueData = labels.map((_, i) => {
+            let total = 0;
+            for (let j = 0; j <= i; j++) {
+                total += ambiguousRevenuePerMonth[j] * (j + 1);
+            }
+            return total;
+        });
+
 
         const infoBox = document.getElementById('infoBox');
         
@@ -90,6 +85,7 @@
             'Ideal Model (3/week)': 2, // Month 2
             'Likely Model (2/week)': 4, // Month 4
             'Poor Model (1/week)': 10, // Month 10
+            'Ambiguous Model': 5 // Month 5
         };
 
         const chartConfig = {
@@ -129,10 +125,10 @@
                     fill: false,
                     tension: 0.1
                 }, {
-                    label: 'Underperforming (0/week)',
-                    data: cumulativeUnderperformingRevenueData,
-                    borderColor: 'rgb(55, 65, 81)', // Dark Gray
-                    backgroundColor: 'rgba(55, 65, 81, 0.5)',
+                    label: 'Ambiguous Model',
+                    data: cumulativeAmbiguousRevenueData,
+                    borderColor: 'rgb(108, 117, 125)', // Custom dark grey
+                    backgroundColor: 'rgba(108, 117, 125, 0.5)',
                     borderWidth: 3,
                     fill: false,
                     tension: 0.1
@@ -198,25 +194,26 @@
                 const modelDataset = visibleDatasets.find(ds => ds.label !== 'Cumulative Costs');
                 if (modelDataset) {
                     const modelLabel = modelDataset.label;
-                    const breakEvenMonth = breakEvenPoints[modelLabel];
                     
                     if (modelLabel.includes('Model')) {
-                        let yCost = cumulativeCostData[breakEvenMonth - 1];
-                        
-                        annotations.push({
-                            type: 'point',
-                            xValue: labels[breakEvenMonth - 1],
-                            yValue: yCost,
-                            backgroundColor: 'rgba(255, 99, 132, 1)',
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            borderWidth: 2,
-                            radius: 8,
-                            label: {
-                                content: 'Break-Even',
-                                enabled: true,
-                                position: 'start'
-                            }
-                        });
+                        const breakEvenMonth = breakEvenPoints[modelLabel];
+                        if (breakEvenMonth) {
+                            let yCost = cumulativeCostData[breakEvenMonth - 1];
+                            annotations.push({
+                                type: 'point',
+                                xValue: labels[breakEvenMonth - 1],
+                                yValue: yCost,
+                                backgroundColor: 'rgba(255, 99, 132, 1)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 2,
+                                radius: 8,
+                                label: {
+                                    content: 'Break-Even',
+                                    enabled: true,
+                                    position: 'start'
+                                }
+                            });
+                        }
                     }
 
                     // Define info text and bailout points for each model
@@ -268,12 +265,12 @@
                                 position: 'end'
                             }
                         });
-                    } else if (modelLabel === 'Underperforming (0/week)') {
-                        infoText = `This is the **Underperforming Model**. It shows a total failure to produce results. The immediate **Bailout Point** is at Month 1. The cumulative cost will continue to grow, while revenue flatlines, making a quick decision essential.`;
+                    } else if (modelLabel === 'Ambiguous Model') {
+                        infoText = `This is the **Ambiguous Model**. It shows a more realistic, sporadic performance that breaks even in **Month 5**. The **Bailout Point** is at Month 1. At this point, we would carefully analyze the initial data to see if the model has a positive trajectory.`;
                         annotations.push({
                             type: 'point',
                             xValue: labels[0],
-                            yValue: cumulativeUnderperformingRevenueData[0],
+                            yValue: cumulativeAmbiguousRevenueData[0],
                             backgroundColor: 'rgba(108, 117, 125, 1)',
                             borderColor: 'rgba(108, 117, 125, 1)',
                             borderWidth: 2,
