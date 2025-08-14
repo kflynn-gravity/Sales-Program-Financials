@@ -7,11 +7,27 @@
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        /* Custom CSS variables for the light theme */
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #212529;
+            --secondary-text: #495057;
+            --accent-green: #198754; /* Professional green */
+            --accent-teal: #0d6efd; /* Strong professional blue */
+            --accent-purple: #6f42c1; /* Professional purple */
+            --accent-pink: #d63384; /* Professional pink */
+            --accent-red: #dc3545; /* Cautionary red */
+            --accent-yellow: #ffc107; /* Warning yellow */
+            --card-bg: #e9ecef;
+            --card-bg-hover: #e2e6ea;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f7fafc;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
+
         .slide {
             min-height: 100vh;
             display: flex;
@@ -21,71 +37,169 @@
             padding: 4rem 2rem;
             margin: 2rem auto;
             max-width: 90vw;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             border-radius: 1.5rem;
+            background-color: var(--card-bg);
+            border: 1px solid #dee2e6;
         }
+
         .slide-content {
             max-width: 5xl;
             width: 100%;
         }
+
+        /* Typography and color updates */
+        .h1-title {
+            color: var(--text-color);
+            font-size: 4rem;
+            line-height: 1.2;
+        }
+        .h2-heading {
+            color: var(--accent-teal);
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .h3-subheading {
+            color: var(--accent-green);
+        }
+        .text-primary {
+            color: var(--text-color);
+        }
+        .text-secondary {
+            color: var(--secondary-text);
+        }
+        .text-accent-teal { color: var(--accent-teal); }
+        .text-accent-green { color: var(--accent-green); }
+        .text-accent-red { color: var(--accent-red); }
+        .text-accent-yellow { color: var(--accent-yellow); }
+        .text-accent-purple { color: var(--accent-purple); }
+
+        /* Card and icon styling for a cleaner look */
+        .card {
+            background-color: #f1f3f5;
+            border: 1px solid #ced4da;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .icon-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        /* Table styling for light theme */
+        .styled-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid #ced4da;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            width: 100%;
+        }
+        .styled-table th, .styled-table td {
+            text-align: left;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #ced4da;
+        }
+        .styled-table th {
+            background-color: #e9ecef;
+            font-weight: 700;
+            color: var(--accent-teal);
+        }
+        .styled-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f1f3f5;
+        }
+        .styled-table tbody tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        /* Chart-specific styling */
         .legend-hover-box {
+            background-color: rgba(248, 249, 250, 0.9);
+            border: 1px solid #ced4da;
+            color: var(--text-color);
+            z-index: 10;
             position: absolute;
             top: 1rem;
             left: 1rem;
-            background-color: rgba(243, 244, 246, 0.9);
             padding: 1rem;
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             width: 16rem;
             display: none;
-            z-index: 10;
         }
         .chart-container {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             width: 100%;
         }
+        .chart-wrapper {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 1px solid #ced4da;
+            width: 100%; /* Make it full width on all screens */
+            max-width: 800px; /* Max width to keep it from getting too big on large screens */
+        }
         @media (min-width: 1024px) {
-            .chart-container {
-                flex-direction: row;
-                justify-content: space-between;
-            }
             .chart-wrapper {
-                width: 48%;
+                width: auto;
             }
         }
-        .styled-table th, .styled-table td {
-            text-align: left;
-            padding: 0.75rem 1.5rem;
+        /* Icon for lists */
+        ul.icon-list li {
+            position: relative;
+            padding-left: 2.5rem;
+            margin-bottom: 1rem;
         }
-        .styled-table th {
-            font-weight: 700;
+        ul.icon-list li .icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.5rem;
         }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
     <!-- Slide 1: Title Slide -->
-    <div class="slide bg-white">
+    <div class="slide">
         <div class="slide-content text-center">
-            <h1 class="text-6xl font-extrabold text-blue-600 tracking-tight">Surcharge Sales Pilot Program</h1>
-            <p class="text-3xl mt-6 font-semibold text-gray-700">A Strategic Pilot to Staff Surcharging Sales</p>
-            <p class="text-xl mt-12 font-medium text-gray-600">Presented by Keith</p>
+            <h1 class="h1-title font-extrabold tracking-tight">Surcharge Sales Pilot Program</h1>
+            <p class="text-3xl mt-6 font-semibold text-accent-teal">A Strategic Pilot to Staff Surcharging Sales</p>
+            <p class="text-xl mt-12 font-medium text-secondary">Presented by Keith</p>
         </div>
     </div>
 
     <!-- Slide 2: The Opportunity -->
-    <div class="slide bg-white">
+    <div class="slide">
         <div class="slide-content">
-            <h2 class="text-4xl font-bold text-blue-600 text-center">The Opportunity</h2>
+            <h2 class="h2-heading text-center">The Opportunity</h2>
             <div class="mt-8 grid md:grid-cols-2 gap-8 text-xl">
-                <div class="p-6 bg-gray-50 rounded-lg border border-gray-200">
-                    <p>
-                        <strong class="text-red-500 font-bold">The Problem:</strong> We've identified a clear opportunity to increase surcharging adoption but lack an efficient staffing model. Past programs have shown the difficulty of a single, one-size-fits-all approach.
+                <div class="card border-l-4" style="border-color: var(--accent-pink);">
+                    <div class="icon-box" style="background-color: var(--accent-pink);">💡</div>
+                    <p class="mt-4">
+                        <strong class="text-accent-pink">The Problem:</strong> We've identified a clear opportunity to increase surcharging adoption but lack an efficient staffing model. Past programs have shown the difficulty of a single, one-size-fits-all approach.
                     </p>
                 </div>
-                <div class="p-6 bg-gray-50 rounded-lg border border-gray-200">
-                    <p>
-                        <strong class="text-green-600 font-bold">The Goal:</strong> Our mission is to create a staffing model that **drives new business** while also embodying our core value of **Purpose and People Above Profits**, creating a pipeline of future Gravity leaders.
+                <div class="card border-l-4" style="border-color: var(--accent-green);">
+                    <div class="icon-box" style="background-color: var(--accent-green);">🚀</div>
+                    <p class="mt-4">
+                        <strong class="text-accent-green">The Goal:</strong> Our mission is to create a staffing model that drives new business while also embodying our core value of **Purpose and People Above Profits**, creating a pipeline of future Gravity leaders.
                     </p>
                 </div>
             </div>
@@ -93,88 +207,172 @@
     </div>
 
     <!-- Slide 3: Program Vision & Hypothesis -->
-    <div class="slide bg-white">
+    <div class="slide">
         <div class="slide-content">
-            <h2 class="text-4xl font-bold text-blue-600 text-center">Program Vision & The Core Hypothesis</h2>
-            <div class="mt-8 text-left space-y-6 text-xl">
-                <p>
-                    <strong class="text-purple-600 font-bold">Program Overview:</strong> We will launch a pilot program with a cohort of part-time, hourly **W-2 associates** on a **"fail-fast"** basis. Their single focus will be to prospect for new surcharging appointments.
-                </p>
-                <p>
-                    <strong class="text-purple-600 font-bold">Our Core Hypothesis:</strong> We believe a single-task, focused role is the key to success. To answer which approach is best—in-person or over the phone—we propose piloting two parallel models for direct comparison.
-                </p>
+            <h2 class="h2-heading text-center">Program Vision & The Core Hypothesis</h2>
+            <div class="mt-8 text-left grid md:grid-cols-2 gap-8 text-xl">
+                <div class="card">
+                    <div class="icon-box" style="background-color: var(--accent-purple);">👁️</div>
+                    <h3 class="h3-subheading mt-2">Program Overview</h3>
+                    <p class="mt-2 text-secondary">
+                        We will launch a pilot program with a cohort of part-time, hourly **W-2 associates** on a **"fail-fast"** basis. Their single focus will be to prospect for new surcharging appointments.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="icon-box" style="background-color: var(--accent-teal);">🔬</div>
+                    <h3 class="h3-subheading mt-2">Our Core Hypothesis</h3>
+                    <p class="mt-2 text-secondary">
+                        We believe a single-task, focused role is the key to success. To answer which approach is best—in-person or over the phone—we propose piloting two parallel models for direct comparison.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Slide 4: Staffing & Scalability -->
-    <div class="slide bg-white">
+    <div class="slide">
         <div class="slide-content">
-            <h2 class="text-4xl font-bold text-blue-600 text-center">Staffing & Scalability</h2>
-            <div class="mt-8 text-left space-y-6 text-xl">
-                <p>
-                    <strong class="text-blue-600 font-bold">Hiring Cadence:</strong> We will start with a pilot cohort of **6 associates**. This number is strategic as it gives us a proper sample size for data while maximizing efficiency relative to fixed costs.
-                </p>
-                <p>
-                    <strong class="text-blue-600 font-bold">Sourcing Strategy:</strong> We will use a multi-pronged approach to attract the right talent: existing applicants, staffing agencies, seasonal businesses, universities, and city help services.
-                </p>
-                <p>
-                    <strong class="text-blue-600 font-bold">Rapid Onboarding:</strong> Our associates will go through a streamlined **3-day onboarding process** to get them in the field or on the phone quickly.
-                </p>
+            <h2 class="h2-heading text-center">Staffing & Scalability</h2>
+            <div class="mt-8 text-left grid md:grid-cols-3 gap-8 text-xl">
+                <div class="card text-center">
+                    <div class="icon-box" style="background-color: var(--accent-green);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-2"><path d="M14 19a6 6 0 0 0-12 0"/><circle cx="8" cy="9" r="4"/><path d="M22 19a6 6 0 0 0-6-6 4 4 0 1 0 0 8z"/></svg>
+                    </div>
+                    <h3 class="h3-subheading">Hiring Cadence</h3>
+                    <p class="mt-2 text-secondary">Start with a pilot cohort of **6 associates** to get a proper sample size while maximizing efficiency.</p>
+                </div>
+                <div class="card text-center">
+                    <div class="icon-box" style="background-color: var(--accent-purple);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin"><path d="M12 18s-4-6-4-8a4 4 0 0 1 8 0c0 2-4 8-4 8z"/><path d="M12 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+                    </div>
+                    <h3 class="h3-subheading">Sourcing Strategy</h3>
+                    <p class="mt-2 text-secondary">Use a multi-pronged approach to attract talent from existing applicants, agencies, and universities.</p>
+                </div>
+                <div class="card text-center">
+                    <div class="icon-box" style="background-color: var(--accent-pink);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rocket"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.72-1.94.22-3.09l-3-3.15a.72.72 0 0 1-.09-1.39l.71-.71a.72.72 0 0 1 1.39-.09l3.15 3c1.15-.5 2.25-.49 3.09.22c1.26 1.5 5 2 5 2s-.5-3.74-2-5c-.84-.71-1.94-.72-3.09-.22l-3-3.15a.72.72 0 0 1-1.39-.09l-.71.71a.72.72 0 0 1-.09 1.39l3.15 3c-.5 1.15-.49 2.25.22 3.09z"/><path d="M9 11l-3 3"/><path d="M14 8l3 3"/></svg>
+                    </div>
+                    <h3 class="h3-subheading">Rapid Onboarding</h3>
+                    <p class="mt-2 text-secondary">A streamlined **3-day onboarding process** to get associates productive quickly.</p>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Slide 5: Performance & The SAA Scorecard -->
-    <div class="slide bg-white">
+    
+    <!-- Slide 5: Sourcing Strategy -->
+    <div class="slide">
         <div class="slide-content">
-            <h2 class="text-4xl font-bold text-blue-600 text-center">Performance & The SAA Scorecard</h2>
+            <h2 class="h2-heading text-center">Sourcing Strategy: Building the Talent Pipeline</h2>
+            <div class="mt-8 text-left grid md:grid-cols-2 gap-8 text-xl">
+                <div class="card flex items-start p-6">
+                    <span class="mr-4 text-accent-teal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building-2"><path d="M14 21v-7a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v7"/><path d="M21 15a2 2 0 0 0-2-2H7.5"/><path d="M19 13v6a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2v-6"/><path d="M18 13v-2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h0"/><path d="M12 2v10"/><path d="M12 6h4"/><path d="M8 6h4"/></svg>
+                    </span>
+                    <div>
+                        <strong class="text-primary">Internal Applicants:</strong> Leverage our current pool of applicants who may be a good fit for this specific, focused role.
+                    </div>
+                </div>
+                <div class="card flex items-start p-6">
+                    <span class="mr-4 text-accent-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-handshake"><path d="M15 11V3l-3 3v7"/><path d="M15 11h-2a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2"/><path d="M15 11a4 4 0 0 0 4 4h2a2 2 0 0 0 2-2v-2a4 4 0 0 0-4-4h-2a2 2 0 0 0-2 2v2"/><path d="M8 20v-7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a4 4 0 0 1-4 4h-2a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h2"/></svg>
+                    </span>
+                    <div>
+                        <strong class="text-primary">Staffing Agencies:</strong> Partner with agencies specializing in sales and part-time roles to quickly fill our cohort.
+                    </div>
+                </div>
+                <div class="card flex items-start p-6">
+                    <span class="mr-4 text-accent-purple">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check"><path d="M20 13c0 5-2 9-5 11s-5-4-5-11V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7Z"/><path d="m9 12 2 2 4-4"/></svg>
+                    </span>
+                    <div>
+                        <strong class="text-primary">Post-Military Programs:</strong> Actively recruit from programs that help veterans transition into civilian careers, leveraging their discipline and teamwork.
+                    </div>
+                </div>
+                <div class="card flex items-start p-6">
+                    <span class="mr-4 text-accent-pink">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-leaf"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 20 5a7 7 0 0 1-1 13.9A9 9 0 0 1 8 22c-5 0-7-2-7-2s1.09-3.34 4.5-6a3.75 3.75 0 0 0 4.5-6c-.72-1.94.07-2.82.5-3.5"/></svg>
+                    </span>
+                    <div>
+                        <strong class="text-primary">Seasonal Industries:</strong> Target employees from seasonal businesses (e.g., pest control) who are seeking part-time work during off-seasons.
+                    </div>
+                </div>
+                <div class="card flex items-start p-6">
+                    <span class="mr-4 text-accent-yellow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-city"><path d="M8 8.1v-4"/><path d="M11 8.1v-4"/><path d="M14 8.1v-4"/><path d="M17 8.1v-4"/><path d="M2 20h20"/><path d="M5 4v16"/><path d="M19 4v16"/><path d="M8 12v8"/><path d="M11 12v8"/><path d="M14 12v8"/><path d="M17 12v4"/><path d="M8 8h9"/><path d="M14 12h3"/><path d="M14 16h3"/></svg>
+                    </span>
+                    <div>
+                        <strong class="text-primary">City Staffing & Services:</strong> Collaborate with local community organizations and city employment services to find talent that aligns with our core values.
+                    </div>
+                </div>
+                <div class="card flex items-start p-6">
+                    <span class="mr-4 text-accent-teal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-graduation-cap"><path d="M21.42 10.95c-.47-.53-1.12-.8-1.8-.8s-1.33.27-1.8.8L12 16.5l-5.82-5.55c-.47-.53-1.12-.8-1.8-.8s-1.33.27-1.8.8L2 12.5v7.25c0 .32.07.64.21.94l1.58 3.16c.33.65.9.65 1.22 0l1.58-3.16c.14-.3.21-.62.21-.94V17.5"/><path d="M10 16.5l-8 7.5V12.5l8-7.5z"/><path d="M22 12.5v7.25c0 .32-.07.64-.21.94l-1.58 3.16c-.33.65-.9.65-1.22 0l-1.58-3.16c-.14-.3-.21-.62-.21-.94V17.5"/><path d="M14 16.5l8-7.5V12.5l-8 7.5z"/></svg>
+                    </span>
+                    <div>
+                        <strong class="text-primary">Universities:</strong> Partner with local universities to recruit ambitious students looking for hands-on sales experience.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 6: Performance & The SAE Scorecard -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2 class="h2-heading text-center">Performance & The SAE Scorecard</h2>
             <div class="mt-8 text-left space-y-6 text-xl">
                 <p>
-                    <strong class="text-green-600 font-bold">Sales Above Average (SAA):</strong> Our scorecard is a clear, mission-aligned way to measure and manage performance.
+                    <strong class="text-accent-green">Sales Above Expected (SAE):</strong> Our scorecard is a clear, mission-aligned way to measure and manage performance.
                 </p>
-                <p>
-                    <strong class="text-green-600 font-bold">How We Make Decisions:</strong> We use a tiered approach to reward effort and results.
-                </p>
-                <ul class="list-disc list-inside ml-4 space-y-2">
-                    <li><strong class="text-red-500 font-bold">Low Effort:</strong> Immediate exit.</li>
-                    <li><strong class="text-yellow-500 font-bold">High Effort, Low Results:</strong> Targeted coaching and support.</li>
-                    <li><strong class="text-green-600 font-bold">High Performer:</strong> Eligibility for the next phase of growth.</li>
+                <div class="card p-4 my-4">
+                    <h4 class="text-xl font-bold text-accent-teal mb-2">About the SAE Score</h4>
+                    <p class="text-secondary text-base">
+                        The SAE Score is a metric, similar to baseball's WAR, that measures a sales representative's performance relative to the average. A score of **0** represents an average performer, a negative score indicates underperformance, and a positive score indicates overperformance.
+                    </p>
+                </div>
+                <ul class="icon-list ml-4 space-y-2 text-secondary">
+                    <li><span class="icon" style="color: var(--accent-red);">🛑</span><strong class="text-accent-red font-bold">Negative Score:</strong> Immediate exit. This rep is performing below the average.</li>
+                    <li><span class="icon" style="color: var(--accent-yellow);">⚠️</span><strong class="text-accent-yellow font-bold">Score from 0 to 1:</strong> Targeted coaching and support. This rep is slightly above average and has potential.</li>
+                    <li><span class="icon" style="color: var(--accent-green);">✅</span><strong class="text-accent-green font-bold">Score greater than 1:</strong> Eligibility for the next phase of growth. This rep is a top performer.</li>
                 </ul>
             </div>
             <div class="mt-12 overflow-x-auto">
-                <h3 class="text-2xl font-bold text-gray-700 text-center mb-4">SAA Performance in Action (Over 30 Days)</h3>
-                <table class="min-w-full divide-y divide-gray-200 styled-table">
-                    <thead class="bg-gray-50">
+                <h3 class="text-2xl font-bold text-center mb-4 text-primary">SAE Performance in Action (Over 30 Days)</h3>
+                <table class="min-w-full divide-y styled-table">
+                    <thead>
                         <tr>
-                            <th class="px-6 py-3 font-bold text-gray-500 uppercase tracking-wider">Rep</th>
-                            <th class="px-6 py-3 font-bold text-gray-500 uppercase tracking-wider">Call Volume</th>
-                            <th class="px-6 py-3 font-bold text-gray-500 uppercase tracking-wider">Appointments Set</th>
-                            <th class="px-6 py-3 font-bold text-gray-500 uppercase tracking-wider">Conversion Rate</th>
-                            <th class="px-6 py-3 font-bold text-gray-500 uppercase tracking-wider">Outcome</th>
+                            <th>Rep</th>
+                            <th>Call Volume</th>
+                            <th>Appointments Set</th>
+                            <th>Conversion Rate</th>
+                            <th>SAE Score</th>
+                            <th>Outcome</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody>
                         <tr>
-                            <td class="px-6 py-4 font-medium text-gray-900"><strong>Rep A</strong></td>
-                            <td class="px-6 py-4 text-red-500 font-bold">250 (Below Avg.)</td>
-                            <td class="px-6 py-4">5</td>
-                            <td class="px-6 py-4">2.0%</td>
-                            <td class="px-6 py-4 text-red-500 font-bold">Immediate Exit</td>
-                        </tr>
-                        <tr class="bg-gray-50">
-                            <td class="px-6 py-4 font-medium text-gray-900"><strong>Rep B</strong></td>
-                            <td class="px-6 py-4 text-green-600 font-bold">500 (Above Avg.)</td>
-                            <td class="px-6 py-4">12</td>
-                            <td class="px-6 py-4">2.4% (Below Avg.)</td>
-                            <td class="px-6 py-4 text-yellow-500 font-bold">Targeted Coaching</td>
+                            <td><strong>Rep A</strong></td>
+                            <td class="text-accent-red">250 (Below Avg.)</td>
+                            <td>5</td>
+                            <td>2.0%</td>
+                            <td class="text-accent-red">-0.78</td>
+                            <td class="text-accent-red">🛑 Immediate Exit</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 font-medium text-gray-900"><strong>Rep C</strong></td>
-                            <td class="px-6 py-4 text-green-600 font-bold">480 (Above Avg.)</td>
-                            <td class="px-6 py-4">30</td>
-                            <td class="px-6 py-4 text-green-600 font-bold">6.3% (Above Avg.)</td>
-                            <td class="px-6 py-4 text-green-600 font-bold">Advance to Next Phase</td>
+                            <td><strong>Rep B</strong></td>
+                            <td class="text-accent-green">500 (Above Avg.)</td>
+                            <td>12</td>
+                            <td>2.4% (Below Avg.)</td>
+                            <td class="text-accent-yellow">0.13</td>
+                            <td class="text-accent-yellow">⚠️ Targeted Coaching</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rep C</strong></td>
+                            <td class="text-accent-green">480 (Above Avg.)</td>
+                            <td>30</td>
+                            <td class="text-accent-green">6.3% (Above Avg.)</td>
+                            <td class="text-accent-green">3.43</td>
+                            <td class="text-accent-green">✅ Advance to Next Phase</td>
                         </tr>
                     </tbody>
                 </table>
@@ -182,50 +380,41 @@
         </div>
     </div>
 
-    <!-- Slide 6: Compensation, Costs & ROI -->
-    <div class="slide bg-white">
+    <!-- Slide 7: Compensation, Costs & ROI -->
+    <div class="slide">
         <div class="slide-content">
-            <h2 class="text-4xl font-bold text-blue-600 text-center">Compensation, Costs & ROI</h2>
+            <h2 class="h2-heading text-center">Compensation, Costs & ROI</h2>
             <div class="mt-8 text-left space-y-6 text-xl">
                 <p>
-                    <strong class="text-blue-600 font-bold">Compensation Model:</strong> Associates will be paid the greater of $20/hr (for an 8-hour day) or $20 per qualified appointment set.
+                    <strong class="text-accent-teal">Compensation Model:</strong> Associates will be paid the greater of $20/hr (for an 8-hour day) or $20 per qualified appointment set.
                 </p>
                 <p>
-                    <strong class="text-blue-600 font-bold">Cost Projection:</strong> For a pilot of **6 associates**, the total monthly cost is approximately **$20,784**.
+                    <strong class="text-accent-teal">Cost Projection:</strong> For a pilot of <strong>6 associates</strong>, the total monthly cost is approximately <strong>$20,784</strong>.
                 </p>
-                <p>
-                    <strong class="text-blue-600 font-bold">The Compounding ROI:</strong> The true value is in the long-term revenue stream. For every **1 associate**, we project:
-                    <ul class="list-disc list-inside ml-4 space-y-2">
-                        <li>**10 appointments per week → 3 new accounts per week.**</li>
-                        <li>**12 new accounts per month, averaging $200 each.**</li>
-                        <li>This generates **$2,400 in new monthly recurring revenue per associate.**</li>
+                <div class="card mt-8">
+                    <strong class="text-accent-teal">The Compounding ROI:</strong> The true value is in the long-term revenue stream. For every <strong>1 associate</strong>, we project:
+                    <ul class="icon-list list-inside mt-4 text-secondary">
+                        <li><span class="icon" style="background-color: var(--accent-purple);">1</span> <strong>10 appointments per week</strong> → 3 new accounts per week.</li>
+                        <li><span class="icon" style="background-color: var(--accent-purple);">2</span> <strong>12 new accounts per month</strong>, averaging $200 each.</li>
+                        <li><span class="icon" style="background-color: var(--accent-purple);">3</span> This generates <strong>$2,400 in new monthly recurring revenue</strong> per associate.</li>
                     </ul>
-                </p>
+                </div>
             </div>
         </div>
     </div>
     
-    <!-- Slide 7: Financial Model Comparison (Interactive Charts) -->
-    <div class="slide bg-white">
+    <!-- Slide 8: Financial Model Comparison (Interactive Charts) -->
+    <div class="slide">
         <div class="slide-content interactive-chart-container">
-            <h2 class="text-4xl font-bold text-blue-600 text-center">Financial Model Comparison: 10-Rep vs. 6-Rep</h2>
-            <div class="text-lg text-center text-gray-600 mt-4 mb-8">
-                <p>Hover over the legend items to explore each scenario's financial story. The charts show how a smaller, strategic team can be more efficient and profitable.</p>
+            <h2 class="h2-heading text-center">Financial Model: 6-Rep Cohort Model</h2>
+            <div class="text-lg text-center text-secondary mt-4 mb-8">
+                <p>Hover over the legend items to explore each scenario's financial story. The chart shows how this strategic team can be efficient and profitable.</p>
             </div>
             
-            <div class="chart-container">
-                <!-- Chart for 10-Rep Cohort -->
-                <div class="chart-wrapper relative p-4 mb-8 lg:mb-0">
-                    <h3 class="text-xl font-bold text-gray-700 text-center mb-4">10-Rep Cohort Model</h3>
-                    <div class="relative h-[400px]">
-                        <canvas id="chart10Reps"></canvas>
-                        <div id="infoBox10" class="legend-hover-box"></div>
-                    </div>
-                </div>
-                
+            <div class="chart-container flex justify-center">
                 <!-- Chart for 6-Rep Cohort -->
-                <div class="chart-wrapper relative p-4">
-                    <h3 class="text-xl font-bold text-gray-700 text-center mb-4">6-Rep Cohort Model</h3>
+                <div class="chart-wrapper relative p-4 w-full max-w-2xl">
+                    <h3 class="text-xl font-bold text-primary text-center mb-4">6-Rep Cohort Model</h3>
                     <div class="relative h-[400px]">
                         <canvas id="chart6Reps"></canvas>
                         <div id="infoBox6" class="legend-hover-box"></div>
@@ -235,76 +424,71 @@
         </div>
     </div>
     
-    <!-- Slide 8: Why a 6-Rep Cohort is More Efficient -->
-    <div class="slide bg-white">
+    <!-- Slide 9: Why a 6-Rep Cohort is More Efficient -->
+    <div class="slide">
         <div class="slide-content">
-            <h2 class="text-4xl font-bold text-blue-600 text-center">Why a 6-Rep Cohort is More Efficient</h2>
+            <h2 class="h2-heading text-center">Why a 6-Rep Cohort is More Efficient</h2>
             <div class="mt-8 text-left space-y-6 text-xl">
-                <p>
+                <p class="text-secondary">
                     Our analysis shows that a cohort of <strong>6 associates</strong> is the most efficient starting point because it optimizes the balance between costs and the compounding revenue each high-performing rep generates.
                 </p>
                 <div class="overflow-x-auto mt-6">
-                    <table class="min-w-full divide-y divide-gray-200 styled-table">
-                        <thead class="bg-gray-50">
+                    <table class="min-w-full divide-y styled-table">
+                        <thead>
                             <tr>
-                                <th class="px-6 py-3 font-bold text-gray-500 uppercase tracking-wider">Metric (at 1 year)</th>
-                                <th class="px-6 py-3 font-bold text-gray-500 uppercase tracking-wider">10-Rep Cohort</th>
-                                <th class="px-6 py-3 font-bold text-gray-500 uppercase tracking-wider">6-Rep Cohort</th>
+                                <th>Metric (at 1 year)</th>
+                                <th>Net Profit Per Rep</th>
+                                <th>Return on Investment (ROI)</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody>
                             <tr>
-                                <td class="px-6 py-4 font-medium text-gray-900">Net Profit Per Rep</td>
-                                <td class="px-6 py-4 font-bold text-gray-900">$145,632</td>
-                                <td class="px-6 py-4 font-bold text-green-600">$152,560</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 font-medium text-gray-900">Return on Investment (ROI)</td>
-                                <td class="px-6 py-4 font-bold text-gray-900">~350%</td>
-                                <td class="px-6 py-4 font-bold text-green-600">~440%</td>
+                                <td>6-Rep Cohort</td>
+                                <td class="text-accent-green">$152,560</td>
+                                <td class="text-accent-green">~440%</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <p class="mt-4 text-gray-500 text-sm">
+                <p class="mt-4 text-secondary text-sm">
                     This data supports a core strategic principle: investing in a smaller, more focused team leads to a more efficient and profitable program.
                 </p>
             </div>
         </div>
     </div>
     
-    <!-- Slide 9: Key Risks & Mitigation -->
-    <div class="slide bg-white">
+    <!-- Slide 10: Key Risks & Mitigation -->
+    <div class="slide">
         <div class="slide-content">
-            <h2 class="text-4xl font-bold text-blue-600 text-center">Key Risks & Mitigation</h2>
+            <h2 class="h2-heading text-center">Key Risks & Mitigation</h2>
             <div class="mt-8 overflow-x-auto text-xl">
-                <table class="min-w-full divide-y divide-gray-200 styled-table">
-                    <thead class="bg-gray-50">
+                <table class="min-w-full divide-y styled-table">
+                    <thead>
                         <tr>
-                            <th class="px-6 py-3 font-bold text-gray-500 uppercase tracking-wider">Risk</th>
-                            <th class="px-6 py-3 font-bold text-gray-500 uppercase tracking-wider">Mitigation Strategy</th>
+                            <th>Risk</th>
+                            <th>Mitigation Strategy</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody>
                         <tr>
-                            <td class="px-6 py-4 text-sm font-medium text-gray-900">Brand Misrepresentation</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">A simple script, focused 3-day onboarding, and a **Quality Score** in our SAE metric to monitor and coach on professionalism.</td>
+                            <td>Brand Misrepresentation</td>
+                            <td>A simple script, focused 3-day onboarding, and a <strong>Quality Score</strong> in our SAE metric to monitor and coach on professionalism.</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 text-sm font-medium text-gray-900">Poor Lead Hand-off</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">Associates will be trained to take detailed notes and a clear process will ensure full-time reps review these notes to create a seamless transition.</td>
+                            <td>Poor Lead Hand-off</td>
+                            <td>Associates will be trained to take detailed notes and a clear process will ensure full-time reps review these notes to create a seamless transition.</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 text-sm font-medium text-gray-900">Legal Issues</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">The **hourly W-2 model** and early buy-in from Legal and HR mitigate misclassification risk.</td>
+                            <td>Legal Issues</td>
+                            <td>The <strong>hourly W-2 model</strong> and early buy-in from Legal and HR mitigate misclassification risk.</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 text-sm font-medium text-gray-900">Market Saturation</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">We will track saturation and have a plan to rotate associates or markets as needed if we scale.</td>
+                            <td>Market Saturation</td>
+                            <td>We will track saturation and have a plan to rotate associates or markets as needed if we scale.</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 text-sm font-medium text-gray-900">Internal Pushback</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">This program is positioned to free up full-time reps to close more deals, not to replace them.</td>
+                            <td>Internal Pushback</td>
+                            <td>This program is positioned to free up full-time reps to close more deals, not to replace them.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -312,39 +496,39 @@
         </div>
     </div>
     
-    <!-- Slide 10: The Program Roadmap & Off-Ramps -->
-    <div class="slide bg-white">
+    <!-- Slide 11: The Program Roadmap & Off-Ramps -->
+    <div class="slide">
         <div class="slide-content">
-            <h2 class="text-4xl font-bold text-blue-600 text-center">The Program Roadmap & Off-Ramps</h2>
+            <h2 class="h2-heading text-center">The Program Roadmap & Off-Ramps</h2>
             <div class="mt-8 overflow-x-auto text-xl">
-                <table class="min-w-full divide-y divide-gray-200 styled-table">
-                    <thead class="bg-gray-50">
+                <table class="min-w-full divide-y styled-table">
+                    <thead>
                         <tr>
-                            <th class="px-6 py-3 font-bold text-gray-500 uppercase tracking-wider">Timeline</th>
-                            <th class="px-6 py-3 font-bold text-gray-500 uppercase tracking-wider">Goal & Benchmark</th>
-                            <th class="px-6 py-3 font-bold text-gray-500 uppercase tracking-wider">Action: The Off-Ramp</th>
+                            <th>Timeline</th>
+                            <th>Goal & Benchmark</th>
+                            <th>Action: The Off-Ramp</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody>
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1 Month</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">Gather initial SAE data and confirm the model's viability.</td>
-                            <td class="px-6 py-4 text-sm text-gray-500"><strong>Pivot/Adjust:</strong> If the model fails to meet benchmarks, we stop the program.</td>
+                            <td>1 Month</td>
+                            <td>Gather initial SAE data and confirm the model's viability.</td>
+                            <td class="text-accent-red"><strong>Pivot/Adjust:</strong> If the model fails to meet benchmarks, we stop the program.</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">3 Months</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">Refine training, onboarding, and begin scaling the team.</td>
-                            <td class="px-6 py-4 text-sm text-gray-500"><strong>Adjust:</strong> If performance plateaus, we adjust the hiring, training, or compensation model.</td>
+                            <td>3 Months</td>
+                            <td>Refine training, onboarding, and begin scaling the team.</td>
+                            <td class="text-accent-yellow"><strong>Adjust:</strong> If performance plateaus, we adjust the hiring, training, or compensation model.</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">6 Months</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">Achieve consistent SAE results, prove the ROI, and identify top performers for growth.</td>
-                            <td class="px-6 py-4 text-sm text-gray-500"><strong>Optimize:</strong> We optimize processes, technology, and compensation to increase efficiency and revenue.</td>
+                            <td>6 Months</td>
+                            <td>Achieve consistent SAE results, prove the ROI, and identify top performers for growth.</td>
+                            <td class="text-accent-green"><strong>Optimize:</strong> We optimize processes, technology, and compensation to increase efficiency and revenue.</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1 Year</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">The program is a fully operational, self-sustaining pipeline.</td>
-                            <td class="px-6 py-4 text-sm text-gray-500"><strong>Formalize:</strong> We formalize a clear, structured **advanced sales program** for our associates and solidify the full-time career path.</td>
+                            <td>1 Year</td>
+                            <td>The program is a fully operational, self-sustaining pipeline.</td>
+                            <td class="text-accent-purple"><strong>Formalize:</strong> We formalize a clear, structured <strong>advanced sales program</strong> for our associates and solidify the full-time career path.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -352,22 +536,22 @@
         </div>
     </div>
 
-    <!-- Slide 11: The Path Forward -->
-    <div class="slide bg-white">
+    <!-- Slide 12: The Path Forward -->
+    <div class="slide">
         <div class="slide-content">
-            <h2 class="text-4xl font-bold text-blue-600 text-center">The Path Forward</h2>
+            <h2 class="h2-heading text-center">The Path Forward</h2>
             <div class="mt-8 text-left space-y-6 text-xl">
                 <p>
-                    <strong class="text-purple-600 font-bold">Summary:</strong> This pilot program is a strategic investment in our mission and our business. It is a data-driven experiment designed to quickly identify the most effective sales model for surcharging while simultaneously building our next generation of sales leaders.
+                    <strong class="text-accent-purple">Summary:</strong> This pilot program is a strategic investment in our mission and our business. It is a data-driven experiment designed to quickly identify the most effective sales model for surcharging while simultaneously building our next generation of sales leaders.
                 </p>
-                <p>
-                    <strong class="text-green-600 font-bold">Next Steps:</strong>
-                    <ul class="list-disc list-inside ml-4 space-y-2">
-                        <li>Secure final approval from this committee.</li>
-                        <li>Finalize the pilot market and hire the first cohort of associates.</li>
-                        <li>Launch the 30-day pilot and begin our journey.</li>
-                    </ul>
+                <p class="mt-8">
+                    <strong class="text-accent-green">Next Steps:</strong>
                 </p>
+                <ul class="icon-list ml-4 space-y-2 text-secondary">
+                    <li><span class="icon" style="background-color: var(--accent-green);">1</span>Secure final approval from this committee.</li>
+                    <li><span class="icon" style="background-color: var(--accent-green);">2</span>Finalize the pilot market and hire the first cohort of associates.</li>
+                    <li><span class="icon" style="background-color: var(--accent-green);">3</span>Launch the 30-day pilot and begin our journey.</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -376,12 +560,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
     
     <script>
-        const cost10Reps = 34640;
-        const idealRev10 = 24000;
-        const likelyRev10 = 16000;
-        const poorRev10 = 8000;
-        const ambiguousRev10_m = [6000, 18000, 10000, 22000, 14000, 25000, 12000, 28000, 15000, 30000, 18000, 35000];
-
         const cost6Reps = 20784;
         const idealRev6 = 14400;
         const likelyRev6 = 9600;
@@ -390,49 +568,42 @@
 
         const labels = ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7', 'Month 8', 'Month 9', 'Month 10', 'Month 11', 'Month 12'];
 
-        const calculateCumulative = (monthlyData, numReps) => {
+        const calculateCumulative = (monthlyData) => {
             let cumulativeData = [];
             let cumulativeTotal = 0;
-            monthlyData.forEach((revenue, i) => {
-                let monthlyRevenue = revenue * numReps;
-                cumulativeTotal += monthlyRevenue * (i + 1);
+            monthlyData.forEach(revenue => {
+                cumulativeTotal += revenue;
                 cumulativeData.push(cumulativeTotal);
             });
             return cumulativeData;
         };
 
-        const cumulativeCost10 = labels.map((_, i) => (i + 1) * cost10Reps);
-        const cumulativeIdealRev10 = calculateCumulative(Array(12).fill(2400), 10);
-        const cumulativeLikelyRev10 = calculateCumulative(Array(12).fill(1600), 10);
-        const cumulativePoorRev10 = calculateCumulative(Array(12).fill(800), 10);
-        const cumulativeAmbiguousRev10 = calculateCumulative(ambiguousRev10_m.map(rev => rev / 10), 10);
-
         const cumulativeCost6 = labels.map((_, i) => (i + 1) * cost6Reps);
-        const cumulativeIdealRev6 = calculateCumulative(Array(12).fill(2400), 6);
-        const cumulativeLikelyRev6 = calculateCumulative(Array(12).fill(1600), 6);
-        const cumulativePoorRev6 = calculateCumulative(Array(12).fill(800), 6);
-        const cumulativeAmbiguousRev6 = calculateCumulative(ambiguousRev6_m.map(rev => rev / 10), 6);
+        const monthlyIdealRev6 = Array(12).fill(idealRev6);
+        const monthlyLikelyRev6 = Array(12).fill(likelyRev6);
+        const monthlyPoorRev6 = Array(12).fill(poorRev6);
+        
+        const cumulativeIdealRev6 = calculateCumulative(monthlyIdealRev6);
+        const cumulativeLikelyRev6 = calculateCumulative(monthlyLikelyRev6);
+        const cumulativePoorRev6 = calculateCumulative(monthlyPoorRev6);
+        const cumulativeAmbiguousRev6 = calculateCumulative(ambiguousRev6_m);
         
         const breakEvenPoints = {
-            '10-Rep Ideal Model (3/week)': 2,
-            '10-Rep Likely Model (2/week)': 4,
-            '10-Rep Poor Model (1/week)': 8,
-            '10-Rep Ambiguous Model': 4,
-            '6-Rep Ideal Model (3/week)': 2,
-            '6-Rep Likely Model (2/week)': 4,
-            '6-Rep Poor Model (1/week)': 8,
-            '6-Rep Ambiguous Model': 4
+            'Ideal Model (3/week)': 2,
+            'Likely Model (2/week)': 4,
+            'Poor Model (1/week)': 8,
+            'Ambiguous Model': 4
         };
 
         const chartColors = {
-            cost: 'rgb(248, 113, 113)',
-            ideal: 'rgb(34, 197, 94)',
-            likely: 'rgb(59, 130, 246)',
-            poor: 'rgb(251, 191, 36)',
-            ambiguous: 'rgb(108, 117, 125)'
+            cost: 'var(--accent-red)',
+            ideal: 'var(--accent-green)',
+            likely: 'var(--accent-teal)',
+            poor: 'var(--accent-yellow)',
+            ambiguous: 'var(--accent-purple)'
         };
 
-        const createChart = (canvasId, titlePrefix, costData, idealData, likelyData, poorData, ambiguousData, infoBoxId) => {
+        const createChart = (canvasId, costData, idealData, likelyData, poorData, ambiguousData, infoBoxId) => {
             const ctx = document.getElementById(canvasId).getContext('2d');
             return new Chart(ctx, {
                 type: 'line',
@@ -447,7 +618,7 @@
                         fill: false,
                         tension: 0.1
                     }, {
-                        label: `${titlePrefix} Ideal Model (3/week)`,
+                        label: `Ideal Model (3/week)`,
                         data: idealData,
                         borderColor: chartColors.ideal,
                         backgroundColor: chartColors.ideal,
@@ -455,7 +626,7 @@
                         fill: false,
                         tension: 0.1
                     }, {
-                        label: `${titlePrefix} Likely Model (2/week)`,
+                        label: `Likely Model (2/week)`,
                         data: likelyData,
                         borderColor: chartColors.likely,
                         backgroundColor: chartColors.likely,
@@ -463,7 +634,7 @@
                         fill: false,
                         tension: 0.1
                     }, {
-                        label: `${titlePrefix} Poor Model (1/week)`,
+                        label: `Poor Model (1/week)`,
                         data: poorData,
                         borderColor: chartColors.poor,
                         backgroundColor: chartColors.poor,
@@ -471,7 +642,7 @@
                         fill: false,
                         tension: 0.1
                     }, {
-                        label: `${titlePrefix} Ambiguous Model`,
+                        label: `Ambiguous Model`,
                         data: ambiguousData,
                         borderColor: chartColors.ambiguous,
                         backgroundColor: chartColors.ambiguous,
@@ -489,34 +660,46 @@
                             title: {
                                 display: true,
                                 text: 'Cumulative Value ($)',
-                                font: { size: 16, weight: 'bold' }
+                                font: { size: 16, weight: 'bold' },
+                                color: 'var(--text-color)'
                             },
                             ticks: {
-                                callback: (value) => '$' + value.toLocaleString()
+                                callback: (value) => '$' + value.toLocaleString(),
+                                color: 'var(--text-color)'
+                            },
+                            grid: {
+                                color: '#ced4da'
                             }
                         },
                         x: {
                             title: {
                                 display: true,
                                 text: 'Timeline',
-                                font: { size: 16, weight: 'bold' }
+                                font: { size: 16, weight: 'bold' },
+                                color: 'var(--text-color)'
+                            },
+                            ticks: {
+                                color: 'var(--text-color)'
+                            },
+                            grid: {
+                                color: '#ced4da'
                             }
                         }
                     },
                     plugins: {
                         legend: {
+                            labels: {
+                                color: 'var(--text-color)'
+                            },
                             onHover: (e, legendItem, legend) => {
                                 const chart = legend.chart;
                                 const label = legendItem.text;
-                                if (label.includes('Model')) {
-                                    updateChartAnnotations(chart, label, infoBoxId);
-                                } else {
-                                    updateChartAnnotations(chart, label, infoBoxId);
-                                }
+                                const breakEvenMonth = breakEvenPoints[label];
+                                updateChartAnnotations(chart, label, 'infoBox6', breakEvenMonth);
                             },
                             onLeave: (e, legendItem, legend) => {
                                 const chart = legend.chart;
-                                resetChartAnnotations(chart, infoBoxId);
+                                resetChartAnnotations(chart, 'infoBox6');
                             }
                         },
                         tooltip: {
@@ -527,7 +710,12 @@
                                     if (context.parsed.y !== null) { label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y); }
                                     return label;
                                 }
-                            }
+                            },
+                            backgroundColor: 'rgba(248, 249, 250, 0.8)',
+                            titleColor: 'var(--text-color)',
+                            bodyColor: 'var(--text-color)',
+                            borderColor: '#ced4da',
+                            borderWidth: 1
                         },
                         annotation: { annotations: [] }
                     }
@@ -535,17 +723,13 @@
             });
         };
 
-        const chart10 = createChart('chart10Reps', '10-Rep', cumulativeCost10, cumulativeIdealRev10, cumulativeLikelyRev10, cumulativePoorRev10, cumulativeAmbiguousRev10, 'infoBox10');
-        const chart6 = createChart('chart6Reps', '6-Rep', cumulativeCost6, cumulativeIdealRev6, cumulativeLikelyRev6, cumulativePoorRev6, cumulativeAmbiguousRev6, 'infoBox6');
+        const chart6 = createChart('chart6Reps', cumulativeCost6, cumulativeIdealRev6, cumulativeLikelyRev6, cumulativePoorRev6, cumulativeAmbiguousRev6, 'infoBox6');
 
-        const updateChartAnnotations = (chart, modelLabel, infoBoxId) => {
+        const updateChartAnnotations = (chart, modelLabel, infoBoxId, breakEvenMonth) => {
             const annotations = [];
             const infoBox = document.getElementById(infoBoxId);
             infoBox.style.display = 'none';
             
-            let descriptiveLabel = modelLabel.replace("10-Rep ", "").replace("6-Rep ", "");
-            const breakEvenMonth = breakEvenPoints[descriptiveLabel];
-
             if (modelLabel.includes('Model')) {
                 if (breakEvenMonth) {
                     let yCost = chart.data.datasets[0].data[breakEvenMonth - 1];
@@ -553,27 +737,30 @@
                         type: 'point',
                         xValue: labels[breakEvenMonth - 1],
                         yValue: yCost,
-                        backgroundColor: 'rgba(255, 99, 132, 1)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'var(--accent-pink)',
+                        borderColor: 'var(--accent-pink)',
                         borderWidth: 2,
                         radius: 8,
                         label: {
                             content: 'Break-Even',
                             enabled: true,
-                            position: 'start'
+                            position: 'start',
+                            backgroundColor: 'rgba(214, 51, 132, 0.8)',
+                            color: 'white',
+                            font: { weight: 'bold' }
                         }
                     });
                 }
             }
             
             let infoText = '';
-            if (descriptiveLabel === 'Ideal Model (3/week)') {
+            if (modelLabel === 'Ideal Model (3/week)') {
                 infoText = `This is the <strong>Ideal Model</strong>. The program is a home run, becoming profitable in <strong>Month 2</strong>. We would immediately scale this successful model.`;
-            } else if (descriptiveLabel === 'Likely Model (2/week)') {
+            } else if (modelLabel === 'Likely Model (2/week)') {
                 infoText = `This is the <strong>Likely Model</strong>. The program breaks even in <strong>Month 4</strong>. The <strong>Bailout Point</strong> is Month 1, where we decide to continue and refine our training to push for better results.`;
-            } else if (descriptiveLabel === 'Poor Model (1/week)') {
+            } else if (modelLabel === 'Poor Model (1/week)') {
                 infoText = `This is the <strong>Poor Model</strong>. It takes until <strong>Month 8</strong> to break even. The <strong>Bailout Point</strong> is at Month 1. At this performance level, we would stop the program and leave the idea behind.`;
-            } else if (descriptiveLabel === 'Ambiguous Model') {
+            } else if (modelLabel === 'Ambiguous Model') {
                 infoText = `This is the <strong>Ambiguous Model</strong>. It shows a more realistic, sporadic performance that breaks even in <strong>Month 4</strong>. The <strong>Bailout Point</strong> is at Month 1. At this point, we would carefully analyze the initial data to see if the model has a positive trajectory.`;
             } else if (modelLabel === 'Cumulative Costs') {
                 infoText = `This line represents the <strong>Cumulative Costs</strong> of running the program. It's the sum of all monthly costs, which are a fixed expense each month.`;
