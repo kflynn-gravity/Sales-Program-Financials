@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Program Financial Scenarios</title>
+    <title>Interactive Financial Scenarios</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -21,26 +21,21 @@
         <!-- Chart Container -->
         <div class="relative h-[500px] w-full">
             <canvas id="cumulativeChart"></canvas>
+            <!-- Dynamic text box for descriptions -->
+            <div id="infoBox" class="absolute top-4 left-4 p-4 bg-gray-100 rounded-lg shadow-md text-gray-700 w-64 hidden"></div>
         </div>
 
         <!-- Chart Description -->
         <div class="mt-8 text-center text-gray-600">
-            <p class="text-lg">This chart compares the **total cumulative cost** of the program against the **total cumulative revenue** for three different performance models over a one-year period. The points where the revenue lines cross the cost line represent the break-even points.</p>
-            <p class="mt-4 text-sm">
-                **Ideal:** 3 new accounts signed per week per associate.
-                <br>
-                **Likely:** 2 new accounts signed per week per associate.
-                <br>
-                **Poor:** 1 new account signed per week per associate.
-            </p>
+            <p class="text-lg">This chart compares the **total cumulative cost** of the program against the **total cumulative revenue** for three different performance models over a one-year period. Click on the legend items to explore each scenario.</p>
         </div>
     </div>
 
-    <!-- Chart.js Library -->
+    <!-- Chart.js Library and Annotation Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
 
     <script>
-        // Financial data based on the provided models
         const monthlyCost = 34640;
         const idealRevenuePerMonth = 24000;
         const likelyRevenuePerMonth = 16000;
@@ -48,7 +43,6 @@
 
         const labels = ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7', 'Month 8', 'Month 9', 'Month 10', 'Month 11', 'Month 12'];
 
-        // Calculate cumulative costs and revenues over the 12-month period
         const cumulativeCostData = labels.map((_, i) => (i + 1) * monthlyCost);
 
         const cumulativeIdealRevenueData = labels.map((_, i) => {
@@ -75,15 +69,22 @@
             return total;
         });
 
-        const ctx = document.getElementById('cumulativeChart').getContext('2d');
-        const cumulativeChart = new Chart(ctx, {
+        const infoBox = document.getElementById('infoBox');
+        
+        const breakEvenPoints = {
+            'Ideal Model (3/week)': 2, // Month 2
+            'Likely Model (2/week)': 4, // Month 4
+            'Poor Model (1/week)': 10 // Month 10
+        };
+
+        const chartConfig = {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [{
                     label: 'Cumulative Costs',
                     data: cumulativeCostData,
-                    borderColor: 'rgb(248, 113, 113)', // Red
+                    borderColor: 'rgb(248, 113, 113)',
                     backgroundColor: 'rgba(248, 113, 113, 0.5)',
                     borderWidth: 3,
                     fill: false,
@@ -91,7 +92,7 @@
                 }, {
                     label: 'Ideal Model (3/week)',
                     data: cumulativeIdealRevenueData,
-                    borderColor: 'rgb(34, 197, 94)', // Green
+                    borderColor: 'rgb(34, 197, 94)',
                     backgroundColor: 'rgba(34, 197, 94, 0.5)',
                     borderWidth: 3,
                     fill: false,
@@ -99,7 +100,7 @@
                 }, {
                     label: 'Likely Model (2/week)',
                     data: cumulativeLikelyRevenueData,
-                    borderColor: 'rgb(59, 130, 246)', // Blue
+                    borderColor: 'rgb(59, 130, 246)',
                     backgroundColor: 'rgba(59, 130, 246, 0.5)',
                     borderWidth: 3,
                     fill: false,
@@ -107,7 +108,7 @@
                 }, {
                     label: 'Poor Model (1/week)',
                     data: cumulativePoorRevenueData,
-                    borderColor: 'rgb(251, 191, 36)', // Yellow
+                    borderColor: 'rgb(251, 191, 36)',
                     backgroundColor: 'rgba(251, 191, 36, 0.5)',
                     borderWidth: 3,
                     fill: false,
@@ -138,7 +139,12 @@
                     }
                 },
                 plugins: {
-                    legend: { position: 'top' },
+                    legend: {
+                        onClick: (e, legendItem, legend) => {
+                            Chart.defaults.plugins.legend.onClick(e, legendItem, legend);
+                            updateChartAnnotations(legend.chart);
+                        }
+                    },
                     tooltip: {
                         callbacks: {
                             label: function(context) {
@@ -148,12 +154,112 @@
                                 return label;
                             }
                         }
+                    },
+                    annotation: {
+                        annotations: []
                     }
                 }
             }
-        });
+        };
 
-        setTimeout(() => { cumulativeChart.update(); }, 500);
+        const ctx = document.getElementById('cumulativeChart').getContext('2d');
+        const cumulativeChart = new Chart(ctx, chartConfig);
+
+        function updateChartAnnotations(chart) {
+            const visibleDatasets = chart.data.datasets.filter(ds => !ds.hidden);
+            const annotations = [];
+            let infoText = '';
+            infoBox.style.display = 'none';
+
+            if (visibleDatasets.length === 2 && visibleDatasets.some(ds => ds.label === 'Cumulative Costs')) {
+                const modelDataset = visibleDatasets.find(ds => ds.label !== 'Cumulative Costs');
+                if (modelDataset) {
+                    const modelLabel = modelDataset.label;
+                    const breakEvenMonth = breakEvenPoints[modelLabel];
+                    
+                    let yCost = cumulativeCostData[breakEvenMonth - 1];
+                    let yRevenue = modelDataset.data[breakEvenMonth - 1];
+                    
+                    annotations.push({
+                        type: 'point',
+                        xValue: labels[breakEvenMonth - 1],
+                        yValue: yCost,
+                        backgroundColor: 'rgba(255, 99, 132, 1)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 2,
+                        radius: 8,
+                        label: {
+                            content: 'Break-Even',
+                            enabled: true,
+                            position: 'start'
+                        }
+                    });
+
+                    // Define info text and bailout points for each model
+                    if (modelLabel === 'Ideal Model (3/week)') {
+                        infoText = `This is the **Ideal Model**. The program is a home run, becoming profitable in **Month 2**. We would immediately scale this successful model.`;
+                        annotations.push({
+                            type: 'point',
+                            xValue: labels[0],
+                            yValue: cumulativeIdealRevenueData[0],
+                            backgroundColor: 'rgba(75, 192, 192, 1)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2,
+                            radius: 8,
+                            label: {
+                                content: 'Go-Ahead Signal (Month 1)',
+                                enabled: true,
+                                position: 'end'
+                            }
+                        });
+                    } else if (modelLabel === 'Likely Model (2/week)') {
+                        infoText = `This is the **Likely Model**. The program breaks even in **Month 4**. The **Bailout Point** is Month 1, where we decide to continue and refine our training to push for better results.`;
+                        annotations.push({
+                            type: 'point',
+                            xValue: labels[0],
+                            yValue: cumulativeLikelyRevenueData[0],
+                            backgroundColor: 'rgba(255, 159, 64, 1)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 2,
+                            radius: 8,
+                            label: {
+                                content: 'Bailout Point (Month 1)',
+                                enabled: true,
+                                position: 'end'
+                            }
+                        });
+                    } else if (modelLabel === 'Poor Model (1/week)') {
+                        infoText = `This is the **Poor Model**. It takes until **Month 10** to break even. The **Bailout Point** is at Month 1. At this performance level, we would stop the program and leave the idea behind.`;
+                        annotations.push({
+                            type: 'point',
+                            xValue: labels[0],
+                            yValue: cumulativePoorRevenueData[0],
+                            backgroundColor: 'rgba(255, 205, 86, 1)',
+                            borderColor: 'rgba(255, 205, 86, 1)',
+                            borderWidth: 2,
+                            radius: 8,
+                            label: {
+                                content: 'Bailout Point (Month 1)',
+                                enabled: true,
+                                position: 'end'
+                            }
+                        });
+                    }
+                    
+                    infoBox.innerHTML = infoText;
+                    infoBox.style.display = 'block';
+                }
+            } else if (visibleDatasets.length === 1 && visibleDatasets[0].label === 'Cumulative Costs') {
+                infoText = `This line represents the **Cumulative Costs** of running the program. It's the sum of all monthly costs, which are a fixed expense each month.`;
+                infoBox.innerHTML = infoText;
+                infoBox.style.display = 'block';
+            }
+            
+            chart.options.plugins.annotation.annotations = annotations;
+            chart.update();
+        }
+
+        setTimeout(() => { updateChartAnnotations(cumulativeChart); }, 500);
     </script>
 </body>
 </html>
