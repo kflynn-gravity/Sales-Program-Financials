@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Financial Scenarios</title>
+    <title>Financial Model Comparison</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -11,251 +11,233 @@
             font-family: 'Inter', sans-serif;
             background-color: #f7fafc;
         }
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        @media (min-width: 1024px) {
+            .chart-container {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .chart-wrapper {
+                width: 48%;
+            }
+        }
+        .legend-hover-box {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: rgba(243, 244, 246, 0.9);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            width: 16rem;
+            display: none;
+            z-index: 10;
+        }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white rounded-xl shadow-2xl p-8 max-w-5xl w-full mx-auto my-8">
-        <!-- Chart Title -->
-        <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Financial Scenarios: Cost vs. Cumulative Revenue</h1>
+<body class="bg-gray-100 p-4">
+    <div class="bg-white rounded-xl shadow-2xl p-8 mx-auto my-8">
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Financial Model Comparison: 10-Rep vs. 6-Rep Cohort</h1>
+        <p class="text-lg text-center text-gray-600 mb-8">This comparison highlights the break-even points and long-term ROI for two different cohort sizes, showing why a smaller, strategic team is the most efficient choice.</p>
         
-        <!-- Chart Container -->
-        <div class="relative h-[500px] w-full">
-            <canvas id="cumulativeChart"></canvas>
-            <!-- Dynamic text box for descriptions -->
-            <div id="infoBox" class="absolute top-4 left-4 p-4 bg-gray-100 rounded-lg shadow-md text-gray-700 w-64 hidden"></div>
-        </div>
-
-        <!-- Chart Description -->
-        <div class="mt-8 text-center text-gray-600">
-            <p class="text-lg">This chart compares the **total cumulative cost** of the program against the **total cumulative revenue** for three different performance models over a one-year period. The model assumes a cohort of 10 associates for the entire year. Click on the legend items to explore each scenario.</p>
-        </div>
-
-        <!-- New Section for Efficiency Explanation -->
-        <div class="mt-12">
-            <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">Why a 6-Rep Cohort is More Efficient</h2>
-            <div class="text-gray-700 space-y-4">
-                <p>
-                    While a 10-rep cohort generates a higher total profit, the <strong>6-rep model is more efficient on a per-rep basis</strong>. This is due to a more strategic balance between the costs of running the program and the compounding revenue each high-performing associate generates.
-                </p>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Metric (at 1 year)</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">10-Rep Cohort</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">6-Rep Cohort</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Total Cumulative Cost</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$415,680</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$207,840</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Total Cumulative Revenue</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1,872,000</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1,123,200</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Net Profit Per Rep</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">$145,632</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">$152,560</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Return on Investment (ROI)</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">~350%</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">~440%</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <div class="chart-container">
+            <!-- Chart for 10-Rep Cohort -->
+            <div class="chart-wrapper relative p-4 mb-8 lg:mb-0">
+                <h2 class="text-xl font-bold text-gray-700 text-center mb-4">10-Rep Cohort Model</h2>
+                <div class="relative h-[400px]">
+                    <canvas id="chart10Reps"></canvas>
+                    <div id="infoBox10" class="legend-hover-box"></div>
                 </div>
-                <p class="mt-4 text-sm text-gray-500">
-                    This data supports a core strategic principle: investing in a smaller, more focused team leads to a more efficient and profitable program.
-                </p>
+            </div>
+
+            <!-- Chart for 6-Rep Cohort -->
+            <div class="chart-wrapper relative p-4">
+                <h2 class="text-xl font-bold text-gray-700 text-center mb-4">6-Rep Cohort Model</h2>
+                <div class="relative h-[400px]">
+                    <canvas id="chart6Reps"></canvas>
+                    <div id="infoBox6" class="legend-hover-box"></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Chart.js Library and Annotation Plugin -->
+    <!-- Chart.js and Annotation Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
-
+    
     <script>
-        const monthlyCost = 34640;
-        const idealRevenuePerMonth = 24000;
-        const likelyRevenuePerMonth = 16000;
-        const poorRevenuePerMonth = 8000;
-        const ambiguousRevenuePerMonth = [6000, 18000, 10000, 22000, 14000, 25000, 12000, 28000, 15000, 30000, 18000, 35000];
+        const cost10Reps = 34640;
+        const idealRev10 = 24000;
+        const likelyRev10 = 16000;
+        const poorRev10 = 8000;
+        const ambiguousRev10_m = [6000, 18000, 10000, 22000, 14000, 25000, 12000, 28000, 15000, 30000, 18000, 35000];
+
+        const cost6Reps = 20784;
+        const idealRev6 = 14400;
+        const likelyRev6 = 9600;
+        const poorRev6 = 4800;
+        const ambiguousRev6_m = [3600, 10800, 6000, 13200, 8400, 15000, 7200, 16800, 9000, 18000, 10800, 21000];
 
         const labels = ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7', 'Month 8', 'Month 9', 'Month 10', 'Month 11', 'Month 12'];
 
-        const cumulativeCostData = labels.map((_, i) => (i + 1) * monthlyCost);
+        const calculateCumulative = (monthlyData, monthlyCost) => {
+            let cumulativeData = [];
+            let cumulativeTotal = 0;
+            monthlyData.forEach((revenue, i) => {
+                cumulativeTotal += revenue * (i + 1);
+                cumulativeData.push(cumulativeTotal);
+            });
+            return cumulativeData;
+        };
 
-        const cumulativeIdealRevenueData = labels.map((_, i) => {
-            let total = 0;
-            for (let j = 0; j <= i; j++) {
-                total += idealRevenuePerMonth * (j + 1);
-            }
-            return total;
-        });
+        const cumulativeCost10 = labels.map((_, i) => (i + 1) * cost10Reps);
+        const cumulativeIdealRev10 = calculateCumulative(Array(12).fill(idealRev10), cost10Reps);
+        const cumulativeLikelyRev10 = calculateCumulative(Array(12).fill(likelyRev10), cost10Reps);
+        const cumulativePoorRev10 = calculateCumulative(Array(12).fill(poorRev10), cost10Reps);
+        const cumulativeAmbiguousRev10 = calculateCumulative(ambiguousRev10_m, cost10Reps);
 
-        const cumulativeLikelyRevenueData = labels.map((_, i) => {
-            let total = 0;
-            for (let j = 0; j <= i; j++) {
-                total += likelyRevenuePerMonth * (j + 1);
-            }
-            return total;
-        });
-
-        const cumulativePoorRevenueData = labels.map((_, i) => {
-            let total = 0;
-            for (let j = 0; j <= i; j++) {
-                total += poorRevenuePerMonth * (j + 1);
-            }
-            return total;
-        });
-        
-        const cumulativeAmbiguousRevenueData = labels.map((_, i) => {
-            let total = 0;
-            for (let j = 0; j <= i; j++) {
-                total += ambiguousRevenuePerMonth[j] * (j + 1);
-            }
-            return total;
-        });
-
-
-        const infoBox = document.getElementById('infoBox');
+        const cumulativeCost6 = labels.map((_, i) => (i + 1) * cost6Reps);
+        const cumulativeIdealRev6 = calculateCumulative(Array(12).fill(idealRev6), cost6Reps);
+        const cumulativeLikelyRev6 = calculateCumulative(Array(12).fill(likelyRev6), cost6Reps);
+        const cumulativePoorRev6 = calculateCumulative(Array(12).fill(poorRev6), cost6Reps);
+        const cumulativeAmbiguousRev6 = calculateCumulative(ambiguousRev6_m, cost6Reps);
         
         const breakEvenPoints = {
-            'Ideal Model (3/week)': 2, // Month 2
-            'Likely Model (2/week)': 4, // Month 4
-            'Poor Model (1/week)': 8, // Month 8
-            'Ambiguous Model': 4 // Month 4
+            'Ideal Model (3/week)': 2,
+            'Likely Model (2/week)': 4,
+            'Poor Model (1/week)': 8,
+            'Ambiguous Model': 4,
         };
 
-        const chartConfig = {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Cumulative Costs',
-                    data: cumulativeCostData,
-                    borderColor: 'rgb(248, 113, 113)',
-                    backgroundColor: 'rgba(248, 113, 113, 0.5)',
-                    borderWidth: 3,
-                    fill: false,
-                    tension: 0.1
-                }, {
-                    label: 'Ideal Model (3/week)',
-                    data: cumulativeIdealRevenueData,
-                    borderColor: 'rgb(34, 197, 94)',
-                    backgroundColor: 'rgba(34, 197, 94, 0.5)',
-                    borderWidth: 3,
-                    fill: false,
-                    tension: 0.1
-                }, {
-                    label: 'Likely Model (2/week)',
-                    data: cumulativeLikelyRevenueData,
-                    borderColor: 'rgb(59, 130, 246)',
-                    backgroundColor: 'rgba(59, 130, 246, 0.5)',
-                    borderWidth: 3,
-                    fill: false,
-                    tension: 0.1
-                }, {
-                    label: 'Poor Model (1/week)',
-                    data: cumulativePoorRevenueData,
-                    borderColor: 'rgb(251, 191, 36)',
-                    backgroundColor: 'rgba(251, 191, 36, 0.5)',
-                    borderWidth: 3,
-                    fill: false,
-                    tension: 0.1
-                }, {
-                    label: 'Ambiguous Model',
-                    data: cumulativeAmbiguousRevenueData,
-                    borderColor: 'rgb(108, 117, 125)', // Custom dark grey
-                    backgroundColor: 'rgba(108, 117, 125, 0.5)',
-                    borderWidth: 3,
-                    fill: false,
-                    tension: 0.1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Cumulative Value ($)',
-                            font: { size: 16, weight: 'bold' }
-                        },
-                        ticks: {
-                            callback: function(value) { return '$' + value.toLocaleString(); }
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Timeline',
-                            font: { size: 16, weight: 'bold' }
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        onHover: (e, legendItem, legend) => {
-                            const chart = legend.chart;
-                            const label = legendItem.text;
-                            if (label !== 'Cumulative Costs') {
-                                updateChartAnnotations(chart, label);
-                            }
-                        },
-                        onLeave: (e, legendItem, legend) => {
-                            const chart = legend.chart;
-                            resetChartAnnotations(chart);
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                             label: function(context) {
-                                let label = context.dataset.label || '';
-                                let newAccounts;
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed.y !== null) {
-                                    // Calculate new accounts for the month
-                                    const monthIndex = context.dataIndex;
-                                    const prevRevenue = monthIndex > 0 ? context.dataset.data[monthIndex - 1] : 0;
-                                    const newMonthlyRevenue = context.parsed.y - prevRevenue;
-                                    newAccounts = Math.round(newMonthlyRevenue / 200);
+        const chartColors = {
+            cost: 'rgb(248, 113, 113)',
+            ideal: 'rgb(34, 197, 94)',
+            likely: 'rgb(59, 130, 246)',
+            poor: 'rgb(251, 191, 36)',
+            ambiguous: 'rgb(108, 117, 125)'
+        };
 
-                                    label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
-                                }
-                                return `${label} (${newAccounts} new accounts)`;
+        const createChart = (canvasId, titlePrefix, costData, idealData, likelyData, poorData, ambiguousData, infoBoxId) => {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Cumulative Costs',
+                        data: costData,
+                        borderColor: chartColors.cost,
+                        backgroundColor: chartColors.cost,
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.1
+                    }, {
+                        label: `${titlePrefix} Ideal Model (3/week)`,
+                        data: idealData,
+                        borderColor: chartColors.ideal,
+                        backgroundColor: chartColors.ideal,
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.1
+                    }, {
+                        label: `${titlePrefix} Likely Model (2/week)`,
+                        data: likelyData,
+                        borderColor: chartColors.likely,
+                        backgroundColor: chartColors.likely,
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.1
+                    }, {
+                        label: `${titlePrefix} Poor Model (1/week)`,
+                        data: poorData,
+                        borderColor: chartColors.poor,
+                        backgroundColor: chartColors.poor,
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.1
+                    }, {
+                        label: `${titlePrefix} Ambiguous Model`,
+                        data: ambiguousData,
+                        borderColor: chartColors.ambiguous,
+                        backgroundColor: chartColors.ambiguous,
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Cumulative Value ($)',
+                                font: { size: 16, weight: 'bold' }
+                            },
+                            ticks: {
+                                callback: (value) => '$' + value.toLocaleString()
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Timeline',
+                                font: { size: 16, weight: 'bold' }
                             }
                         }
                     },
-                    annotation: {
-                        annotations: []
+                    plugins: {
+                        legend: {
+                            onHover: (e, legendItem, legend) => {
+                                const chart = legend.chart;
+                                const label = legendItem.text;
+                                if (label.includes('Model')) {
+                                    updateChartAnnotations(chart, label, infoBoxId);
+                                } else {
+                                    updateChartAnnotations(chart, label, infoBoxId);
+                                }
+                            },
+                            onLeave: (e, legendItem, legend) => {
+                                const chart = legend.chart;
+                                resetChartAnnotations(chart, infoBoxId);
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed.y !== null) { label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y); }
+                                    return label;
+                                }
+                            }
+                        },
+                        annotation: { annotations: [] }
                     }
                 }
-            }
+            });
         };
 
-        const ctx = document.getElementById('cumulativeChart').getContext('2d');
-        const cumulativeChart = new Chart(ctx, chartConfig);
+        const chart10 = createChart('chart10Reps', '10-Rep', cumulativeCost10, cumulativeIdealRev10, cumulativeLikelyRev10, cumulativePoorRev10, cumulativeAmbiguousRev10, 'infoBox10');
+        const chart6 = createChart('chart6Reps', '6-Rep', cumulativeCost6, cumulativeIdealRev6, cumulativeLikelyRev6, cumulativePoorRev6, cumulativeAmbiguousRev6, 'infoBox6');
 
-        function updateChartAnnotations(chart, modelLabel) {
+        const updateChartAnnotations = (chart, modelLabel, infoBoxId) => {
             const annotations = [];
+            const infoBox = document.getElementById(infoBoxId);
             infoBox.style.display = 'none';
             
+            let descriptiveLabel = modelLabel.replace("10-Rep ", "").replace("6-Rep ", "");
+            const breakEvenMonth = breakEvenPoints[descriptiveLabel];
+
             if (modelLabel.includes('Model')) {
-                const breakEvenMonth = breakEvenPoints[modelLabel];
                 if (breakEvenMonth) {
-                    let yCost = cumulativeCostData[breakEvenMonth - 1];
+                    let yCost = chart.data.datasets[0].data[breakEvenMonth - 1];
                     annotations.push({
                         type: 'point',
                         xValue: labels[breakEvenMonth - 1],
@@ -272,30 +254,34 @@
                     });
                 }
             }
-
+            
             let infoText = '';
-            if (modelLabel === 'Ideal Model (3/week)') {
+            if (descriptiveLabel === 'Ideal Model (3/week)') {
                 infoText = `This is the **Ideal Model**. The program is a home run, becoming profitable in **Month 2**. We would immediately scale this successful model.`;
-            } else if (modelLabel === 'Likely Model (2/week)') {
+            } else if (descriptiveLabel === 'Likely Model (2/week)') {
                 infoText = `This is the **Likely Model**. The program breaks even in **Month 4**. The **Bailout Point** is Month 1, where we decide to continue and refine our training to push for better results.`;
-            } else if (modelLabel === 'Poor Model (1/week)') {
+            } else if (descriptiveLabel === 'Poor Model (1/week)') {
                 infoText = `This is the **Poor Model**. It takes until **Month 8** to break even. The **Bailout Point** is at Month 1. At this performance level, we would stop the program and leave the idea behind.`;
-            } else if (modelLabel === 'Ambiguous Model') {
+            } else if (descriptiveLabel === 'Ambiguous Model') {
                 infoText = `This is the **Ambiguous Model**. It shows a more realistic, sporadic performance that breaks even in **Month 4**. The **Bailout Point** is at Month 1. At this point, we would carefully analyze the initial data to see if the model has a positive trajectory.`;
+            } else if (descriptiveLabel === 'Cumulative Costs') {
+                infoText = `This line represents the **Cumulative Costs** of running the program. It's the sum of all monthly costs, which are a fixed expense each month.`;
             }
             
-            infoBox.innerHTML = infoText;
-            infoBox.style.display = 'block';
-            
+            if (infoText) {
+                infoBox.innerHTML = infoText;
+                infoBox.style.display = 'block';
+            }
+
             chart.options.plugins.annotation.annotations = annotations;
             chart.update();
-        }
+        };
 
-        function resetChartAnnotations(chart) {
+        const resetChartAnnotations = (chart, infoBoxId) => {
             chart.options.plugins.annotation.annotations = [];
-            infoBox.style.display = 'none';
+            document.getElementById(infoBoxId).style.display = 'none';
             chart.update();
-        }
+        };
     </script>
 </body>
 </html>
