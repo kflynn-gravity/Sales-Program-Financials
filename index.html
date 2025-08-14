@@ -27,7 +27,7 @@
 
         <!-- Chart Description -->
         <div class="mt-8 text-center text-gray-600">
-            <p class="text-lg">This chart compares the **total cumulative cost** of the program against the **total cumulative revenue** for three different performance models over a one-year period. Click on the legend items to explore each scenario.</p>
+            <p class="text-lg">This chart compares the **total cumulative cost** of the program against the **total cumulative revenue** for three different performance models over a one-year period. The model assumes a cohort of 10 associates for the entire year. Click on the legend items to explore each scenario.</p>
         </div>
     </div>
 
@@ -84,8 +84,8 @@
         const breakEvenPoints = {
             'Ideal Model (3/week)': 2, // Month 2
             'Likely Model (2/week)': 4, // Month 4
-            'Poor Model (1/week)': 10, // Month 10
-            'Ambiguous Model': 5 // Month 5
+            'Poor Model (1/week)': 8, // Month 8
+            'Ambiguous Model': 4 // Month 4
         };
 
         const chartConfig = {
@@ -237,9 +237,9 @@
             } else if (modelLabel === 'Likely Model (2/week)') {
                 infoText = `This is the **Likely Model**. The program breaks even in **Month 4**. The **Bailout Point** is Month 1, where we decide to continue and refine our training to push for better results.`;
             } else if (modelLabel === 'Poor Model (1/week)') {
-                infoText = `This is the **Poor Model**. It takes until **Month 10** to break even. The **Bailout Point** is at Month 1. At this performance level, we would stop the program and leave the idea behind.`;
+                infoText = `This is the **Poor Model**. It takes until **Month 8** to break even. The **Bailout Point** is at Month 1. At this performance level, we would stop the program and leave the idea behind.`;
             } else if (modelLabel === 'Ambiguous Model') {
-                infoText = `This is the **Ambiguous Model**. It shows a more realistic, sporadic performance that breaks even in **Month 5**. The **Bailout Point** is at Month 1. At this point, we would carefully analyze the initial data to see if the model has a positive trajectory.`;
+                infoText = `This is the **Ambiguous Model**. It shows a more realistic, sporadic performance that breaks even in **Month 4**. The **Bailout Point** is at Month 1. At this point, we would carefully analyze the initial data to see if the model has a positive trajectory.`;
             }
             
             infoBox.innerHTML = infoText;
