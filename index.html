@@ -85,7 +85,7 @@
                 </div>
                 <div class="p-6 bg-gray-50 rounded-lg border border-gray-200">
                     <p>
-                        <strong class="text-green-600 font-bold">The Goal:</strong> Our mission is to create a staffing model that <strong>drives new business</strong> while also embodying our core value of <strong>Purpose and People Above Profits</strong>, creating a pipeline of future Gravity leaders.
+                        <strong class="text-green-600 font-bold">The Goal:</strong> Our mission is to create a staffing model that **drives new business** while also embodying our core value of **Purpose and People Above Profits**, creating a pipeline of future Gravity leaders.
                     </p>
                 </div>
             </div>
@@ -208,14 +208,24 @@
     <!-- Slide 7: Financial Model Comparison (Interactive Charts) -->
     <div class="slide bg-white">
         <div class="slide-content interactive-chart-container">
-            <h2 class="text-4xl font-bold text-blue-600 text-center">Financial Model: 6-Rep Pilot</h2>
+            <h2 class="text-4xl font-bold text-blue-600 text-center">Financial Model Comparison: 10-Rep vs. 6-Rep</h2>
             <div class="text-lg text-center text-gray-600 mt-4 mb-8">
-                <p>Hover over the legend items to explore each scenario's financial story. This chart shows how a strategic 6-rep team is an efficient and profitable investment.</p>
+                <p>Hover over the legend items to explore each scenario's financial story. The charts show how a smaller, strategic team can be more efficient and profitable.</p>
             </div>
             
             <div class="chart-container">
+                <!-- Chart for 10-Rep Cohort -->
+                <div class="chart-wrapper relative p-4 mb-8 lg:mb-0">
+                    <h3 class="text-xl font-bold text-gray-700 text-center mb-4">10-Rep Cohort Model</h3>
+                    <div class="relative h-[400px]">
+                        <canvas id="chart10Reps"></canvas>
+                        <div id="infoBox10" class="legend-hover-box"></div>
+                    </div>
+                </div>
+                
                 <!-- Chart for 6-Rep Cohort -->
                 <div class="chart-wrapper relative p-4">
+                    <h3 class="text-xl font-bold text-gray-700 text-center mb-4">6-Rep Cohort Model</h3>
                     <div class="relative h-[400px]">
                         <canvas id="chart6Reps"></canvas>
                         <div id="infoBox6" class="legend-hover-box"></div>
@@ -278,7 +288,7 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr>
                             <td class="px-6 py-4 text-sm font-medium text-gray-900">Brand Misrepresentation</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">A simple script, focused 3-day onboarding, and a **Quality Score** in our SAA metric to monitor and coach on professionalism.</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">A simple script, focused 3-day onboarding, and a **Quality Score** in our SAE metric to monitor and coach on professionalism.</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 text-sm font-medium text-gray-900">Poor Lead Hand-off</td>
@@ -318,7 +328,7 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1 Month</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">Gather initial SAA data and confirm the model's viability.</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">Gather initial SAE data and confirm the model's viability.</td>
                             <td class="px-6 py-4 text-sm text-gray-500"><strong>Pivot/Adjust:</strong> If the model fails to meet benchmarks, we stop the program.</td>
                         </tr>
                         <tr>
@@ -328,7 +338,7 @@
                         </tr>
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">6 Months</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">Achieve consistent SAA results, prove the ROI, and identify top performers for growth.</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">Achieve consistent SAE results, prove the ROI, and identify top performers for growth.</td>
                             <td class="px-6 py-4 text-sm text-gray-500"><strong>Optimize:</strong> We optimize processes, technology, and compensation to increase efficiency and revenue.</td>
                         </tr>
                         <tr>
@@ -361,7 +371,7 @@
             </div>
         </div>
     </div>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
     
@@ -380,27 +390,28 @@
 
         const labels = ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7', 'Month 8', 'Month 9', 'Month 10', 'Month 11', 'Month 12'];
 
-        const calculateCumulative = (monthlyData, monthlyCost) => {
+        const calculateCumulative = (monthlyData, numReps) => {
             let cumulativeData = [];
             let cumulativeTotal = 0;
             monthlyData.forEach((revenue, i) => {
-                cumulativeTotal += revenue * (i + 1);
+                let monthlyRevenue = revenue * numReps;
+                cumulativeTotal += monthlyRevenue * (i + 1);
                 cumulativeData.push(cumulativeTotal);
             });
             return cumulativeData;
         };
 
         const cumulativeCost10 = labels.map((_, i) => (i + 1) * cost10Reps);
-        const cumulativeIdealRev10 = calculateCumulative(Array(12).fill(idealRev10), cost10Reps);
-        const cumulativeLikelyRev10 = calculateCumulative(Array(12).fill(likelyRev10), cost10Reps);
-        const cumulativePoorRev10 = calculateCumulative(Array(12).fill(poorRev10), cost10Reps);
-        const cumulativeAmbiguousRev10 = calculateCumulative(ambiguousRev10_m, cost10Reps);
+        const cumulativeIdealRev10 = calculateCumulative(Array(12).fill(2400), 10);
+        const cumulativeLikelyRev10 = calculateCumulative(Array(12).fill(1600), 10);
+        const cumulativePoorRev10 = calculateCumulative(Array(12).fill(800), 10);
+        const cumulativeAmbiguousRev10 = calculateCumulative(ambiguousRev10_m.map(rev => rev / 10), 10);
 
         const cumulativeCost6 = labels.map((_, i) => (i + 1) * cost6Reps);
-        const cumulativeIdealRev6 = calculateCumulative(Array(12).fill(idealRev6), cost6Reps);
-        const cumulativeLikelyRev6 = calculateCumulative(Array(12).fill(likelyRev6), cost6Reps);
-        const cumulativePoorRev6 = calculateCumulative(Array(12).fill(poorRev6), cost6Reps);
-        const cumulativeAmbiguousRev6 = calculateCumulative(ambiguousRev6_m, cost6Reps);
+        const cumulativeIdealRev6 = calculateCumulative(Array(12).fill(2400), 6);
+        const cumulativeLikelyRev6 = calculateCumulative(Array(12).fill(1600), 6);
+        const cumulativePoorRev6 = calculateCumulative(Array(12).fill(800), 6);
+        const cumulativeAmbiguousRev6 = calculateCumulative(ambiguousRev6_m.map(rev => rev / 10), 6);
         
         const breakEvenPoints = {
             '10-Rep Ideal Model (3/week)': 2,
